@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Транслизинг - Программа АБВ для малого бизнеса Челябинской области</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .phone {
+            font-size: 20px;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .hero .subtitle {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #ffd700;
+        }
+        
+        .hero .description {
+            font-size: 20px;
+            margin-bottom: 40px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 18px 40px;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(238, 90, 36, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(238, 90, 36, 0.4);
+        }
+        
+        /* Sections */
+        .section {
+            padding: 80px 0;
+            background: white;
+        }
+        
+        .section:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .section-title {
+            font-size: 36px;
+            text-align: center;
+            margin-bottom: 50px;
+            color: #2c3e50;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            border-radius: 2px;
+        }
+        
+        /* Program Info */
+        .program-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .info-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .info-card:hover {
+            transform: translateY(-5px);
+            border-color: #667eea;
+        }
+        
+        .info-card h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .info-card p {
+            font-size: 16px;
+            color: #666;
+        }
+        
+        /* Cases */
+        .cases {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .case-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-left: 5px solid #667eea;
+        }
+        
+        .case-card h4 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .case-card p {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        /* Urgency Block */
+        .urgency {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+        
+        .urgency h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+        
+        .urgency p {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+        
+        .places-left {
+            font-size: 48px;
+            font-weight: bold;
+            color: #ffd700;
+            margin: 20px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        /* Equipment Table */
+        .equipment-table {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+        
+        .equipment-category {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .equipment-category h4 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 5px;
+        }
+        
+        .equipment-category p {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        /* Form Styles */
+        .form-container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            margin: 40px auto;
+            max-width: 600px;
+        }
+        
+        .form-title {
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        /* Testimonials */
+        .testimonials {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+        }
+        
+        .testimonial {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .testimonial::before {
+            content: '"';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            font-size: 60px;
+            color: #667eea;
+            font-family: serif;
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #666;
+        }
+        
+        .testimonial-author {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        /* Benefits */
+        .benefits {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .benefit {
+            text-align: center;
+            padding: 30px 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .benefit:hover {
+            transform: translateY(-5px);
+        }
+        
+        .benefit-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #667eea;
+        }
+        
+        .benefit h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .benefit p {
+            color: #666;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+        
+        .footer p {
+            margin-bottom: 10px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+            
+            .hero .description {
+                font-size: 16px;
+            }
+            
+            .section-title {
+                font-size: 28px;
+            }
+            
+            .container {
+                padding: 0 15px;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-on-scroll {
+            animation: fadeInUp 0.8s ease forwards;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="phone">8-800-4444-100</div>
+                <div class="logo">ТРАНСЛИЗИНГ</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Хватит ждать! Сейчас получите оборудование в лизинг и сделайте х2-х3 за год — без кредита, без потери оборотки, с выгодой для вас!</h1>
+                <div class="subtitle">СТРОИТЕЛЬСТВО * ПРОИЗВОДСТВО * УСЛУГИ</div>
+                <p class="description">
+                    Только для малого бизнеса Челябинской области. Программа «АБВ» от «Транслизинг» — получите нужную технику быстро и без переплат.
+                </p>
+                <a href="#form1" class="btn">ПОЛУЧИТЬ ОБОРУДОВАНИЕ СЕЙЧАС</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Program ABC -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Программа «АБВ»</h2>
+            <div class="program-info">
+                <div class="info-card">
+                    <h3>🏆 Реальные кейсы предпринимателей</h3>
+                    <p>Из Челябинской области уже получили результат</p>
+                </div>
+                <div class="info-card">
+                    <h3>⚡ Оборудование — уже сейчас</h3>
+                    <p>Не ждите месяцами, получите технику быстро</p>
+                </div>
+                <div class="info-card">
+                    <h3>💰 Без кредита, с выгодой</h3>
+                    <p>Без удара по оборотке, с выгодой для бизнеса</p>
+                </div>
+            </div>
+            
+            <div style="text-align: center; background: #f8f9fa; padding: 40px; border-radius: 15px;">
+                <h3 style="font-size: 28px; margin-bottom: 20px; color: #2c3e50;">Что такое программа АБВ?</h3>
+                <p style="font-size: 18px; margin-bottom: 30px;">
+                    Вы получаете нужную технику и запускаете рост х2-х3 без кредитов, переплат, и без ожидания!
+                </p>
+                <div class="benefits">
+                    <div class="benefit">
+                        <div class="benefit-icon">🔧</div>
+                        <h3>Оборудование без кредита</h3>
+                        <p>Никаких банковских процедур и залогов</p>
+                    </div>
+                    <div class="benefit">
+                        <div class="benefit-icon">📈</div>
+                        <h3>Рост прибыли с первого месяца</h3>
+                        <p>Начинайте зарабатывать сразу</p>
+                    </div>
+                    <div class="benefit">
+                        <div class="benefit-icon">💎</div>
+                        <h3>Выгодные условия</h3>
+                        <p>Под любое оборудование</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cases -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Реальные кейсы роста</h2>
+            <div class="cases">
+                <div class="case-card">
+                    <h4>🏭 Производство, г. Миасс</h4>
+                    <p>Выручка выросла в <strong>2,3 раза за 10 месяцев</strong> после получения станка</p>
+                </div>
+                <div class="case-card">
+                    <h4>🏗️ Строительная компания, г. Копейск</h4>
+                    <p>Взяли вагончики, <strong>освободили кэш</strong> и вышли на новые тендеры</p>
+                </div>
+                <div class="case-card">
+                    <h4>🔧 Сервисный бизнес, г. Челябинск</h4>
+                    <p>Замена оборудования + субсидия → рост прибыли в <strong>2,7 раза</strong></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Urgency -->
+    <section class="urgency">
+        <div class="container">
+            <h2>⚠️ Но поспешите!</h2>
+            <p>Пока ваши конкуренты ещё не подали заявку — у вас есть шанс вырваться вперёд.</p>
+            <p>Программа ограничена по бюджету и доступна только для <strong>17 компаний</strong> из региона.</p>
+            <div class="places-left">Осталось только 8 мест из 17</div>
+            <p style="font-size: 20px; margin-bottom: 30px;">
+                Программа АБВ — это не для всех. Изначально было выделено 17 мест для малого бизнеса Челябинской области. 
+                На сегодняшний день свободно только 8. Остальные уже оформляют технику, получают субсидии и выходят в плюс.
+            </p>
+            <a href="#form1" class="btn">ЗАБРОНИРОВАТЬ МЕСТО</a>
+        </div>
+    </section>
+
+    <!-- Form 1 -->
+    <section class="section" id="form1">
+        <div class="container">
+            <div class="form-container">
+                <h3 class="form-title">Узнайте сейчас, подходит ли ваш бизнес?</h3>
+                <form>
+                    <div class="form-group">
+                        <label for="name1">Ваше имя *</label>
+                        <input type="text" id="name1" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone1">Телефон *</label>
+                        <input type="tel" id="phone1" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="interest1">Что интересует *</label>
+                        <select id="interest1" name="interest" required>
+                            <option value="">Выберите оборудование</option>
+                            <option value="станки">Станки (ЧПУ, фрезерные, токарные)</option>
+                            <option value="энергетика">Энергетика (генераторы, компрессоры)</option>
+                            <option value="модульные">Модульные решения (вагончики, бытовки)</option>
+                            <option value="стройоборудование">Стройоборудование (сварка, подъёмники)</option>
+                            <option value="другое">Другое оборудование</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="price1">Ориентировочная цена оборудования</label>
+                        <select id="price1" name="price">
+                            <option value="">Выберите диапазон</option>
+                            <option value="до 1 млн">До 1 млн руб.</option>
+                            <option value="1-3 млн">1-3 млн руб.</option>
+                            <option value="3-5 млн">3-5 млн руб.</option>
+                            <option value="5-10 млн">5-10 млн руб.</option>
+                            <option value="свыше 10 млн">Свыше 10 млн руб.</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="submit-btn">ПОЛУЧИТЬ КОНСУЛЬТАЦИЮ ЗА 1 ЧАС</button>
+                </form>
+                <p style="text-align: center; margin-top: 20px; color: #666;">
+                    Или звоните: <strong>8-800-4444-100</strong>, менеджеры на связи
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ideal Solution -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">ИДЕАЛЬНОЕ РЕШЕНИЕ, КОГДА:</h2>
+            <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 50px; border-radius: 20px; text-align: center;">
+                <h3 style="font-size: 28px; margin-bottom: 30px;">
+                    Вам нужно оборудование, ЧТОБЫ СДЕЛАТЬ Х2-Х3 К ПРИБЫЛИ, но:
+                </h3>
+                <div class="benefits">
+                    <div style="background: rgba(255,255,255,0.1); padding: 30px; border-radius: 15px;">
+                        <h4 style="margin-bottom: 15px;">❌ Не хочется лезть в кредит</h4>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.1); padding: 30px; border-radius: 15px;">
+                        <h4 style="margin-bottom: 15px;">💸 Нет «лишних» 5–7 миллионов сразу</h4>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.1); padding: 30px; border-radius: 15px;">
+                        <h4 style="margin-bottom: 15px;">📋 В банке просят кучу бумаг и залог</h4>
+                    </div>
+                </div>
+                <h3 style="font-size: 24px; margin: 40px 0 20px 0; color: #ffd700;">
+                    ✅ Решение — лизинг по НОВОЙ программе АБВ от «Транслизинг»
+                </h3>
+                <p style="font-size: 18px;">
+                    Станки. Генераторы. Вагончики. Любое оборудование.<br>
+                    На понятных условиях — уже в этом месяце.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why It Works -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Почему это работает</h2>
+            <div class="benefits">
+                <div class="benefit">
+                    <div class="benefit-icon">5️⃣</div>
+                    <h3>Аванс от 5%</h3>
+                    <p>Участвуйте даже без вложений</p>
+                </div>
+                <div class="benefit">
+                    <div class="benefit-icon">⏰</div>
+                    <h3>Ответ за 1 час</h3>
+                    <p>Не бюрократия, а бизнес</p>
+                </div>
+                <div class="benefit">
+                    <div class="benefit-icon">📊</div>
+                    <h3>Реальные кейсы роста</h3>
+                    <p>Клиенты увеличивают выручку в 2–4 раза за 1-2 года</p>
+                </div>
+                <div class="benefit">
+                    <div class="benefit-icon">🎯</div>
+                    <h3>Возможность субсидии</h3>
+                    <p>Под программу импортозамещения/ОПК/Минпромторг</p>
+                </div>
+                <div class="benefit">
+                    <div class="benefit-icon">🤝</div>
+                    <h3>Поддержка на каждом этапе</h3>
+                    <p>От заявки до запуска</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Примеры, как работает АБВ</h2>
+            <div class="testimonials">
+                <div class="testimonial">
+                    <div class="testimonial-text">
+                        Купил лазерный станок через лизинг. Без него — не потянул бы. Через 3 месяца вышел в плюс, 
+                        через 8 месяцев — второй станок. Сейчас открываю филиал.
+                    </div>
+                    <div class="testimonial-author">Андрей, г. Челябинск</div>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-text">
+                        Взяли вагончики для вахты. Благодаря программе АБВ — без единого рубля аванса. 
+                        Нам просто нужно было работать — и мы начали.
+                    </div>
+                    <div class="testimonial-author">Марина, Магнитогорск</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA After Testimonials -->
+    <section class="section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-align: center;">
+        <div class="container">
+            <h2 style="font-size: 32px; margin-bottom: 20px;">Готовы начать рост уже сейчас?</h2>
+            <p style="font-size: 20px; margin-bottom: 30px;">
+                Не упустите возможность получить оборудование без кредита и переплат
+            </p>
+            <a href="#form1" class="btn">ПОДАТЬ ЗАЯВКУ ПРЯМО СЕЙЧАС</a>
+        </div>
+    </section>
+
+    <!-- Equipment -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Что можно взять в лизинг по АБВ</h2>
+            <div class="equipment-table">
+                <div class="equipment-category">
+                    <h4>🔧 Станки</h4>
+                    <p>ЧПУ, фрезерные, сверлильные, токарные</p>
+                </div>
+                <div class="equipment-category">
+                    <h4>⚡ Энергетика</h4>
+                    <p>Дизельные генераторы, компрессоры, трансформаторы</p>
+                </div>
+                <div class="equipment-category">
+                    <h4>🏠 Модульные решения</h4>
+                    <p>Вагончики, блок-контейнеры, бытовки</p>
+                </div>
+                <div class="equipment-category">
+                    <h4>🏗️ Стройоборудование</h4>
+                    <p>Сварка, компрессоры, подъёмники</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Target Audience -->
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Мы работаем с теми, кому не хочется брать деньги в дорогой кредит</h2>
+            <div style="background: #f8f9fa; padding: 50px; border-radius: 20px; text-align: center;">
+                <h3 style="font-size: 24px; margin-bottom: 30px; color: #2c3e50;">Если у вас:</h3>
+                <div class="benefits">
+                    <div class="benefit">
+                        <div class="benefit-icon">🏢</div>
+                        <h3>Малый бизнес</h3>
+                        <p>До 100 сотрудников, выручка до 800 млн</p>
+                    </div>
+                    <div class="benefit">
+                        <div class="benefit-icon">💼</div>
+                        <h3>Есть опыт работы</h3>
+                        <p>Минимум 1 год на рынке</p>
+                    </div>
+                    <div class="benefit">
+                        <div class="benefit-icon">📍</div>
+                        <h3>Челябинская область</h3>
+                        <p>Регистрация в регионе</p>
+                    </div>
+                    <div class="benefit">
+                        <div class="benefit-icon">📈</div>
+                        <h3>Планы роста</h3>
+                        <p>Готовы развивать бизнес</p>
+                    </div>
+                </div>
+                <h3 style="font-size: 24px; margin: 40px 0 20px 0; color: #e74c3c;">
+                    ✅ Тогда программа АБВ — это ваш шанс!
+                </h3>
+                <p style="font-size: 18px;">
+                    Получите нужную технику без кредита и начните зарабатывать больше уже в этом месяце.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="urgency">
+        <div class="container">
+            <h2>🎯 Последний шанс войти в программу АБВ</h2>
+            <p style="font-size: 20px;">Помните: осталось только <strong>8 мест из 17</strong></p>
+            <p style="font-size: 18px; margin-bottom: 30px;">
+                Пока вы думаете — ваши конкуренты уже получают оборудование и опережают вас.
+            </p>
+            <a href="#form2" class="btn">ЗАБРОНИРОВАТЬ ПОСЛЕДНЕЕ МЕСТО</a>
+        </div>
+    </section>
+
+    <!-- Form 2 -->
+    <section class="section" id="form2">
+        <div class="container">
+            <div class="form-container">
+                <h3 class="form-title">Закажите звонок — получите расчёт за 1 час</h3>
+                <form>
+                    <div class="form-group">
+                        <label for="name2">Ваше имя *</label>
+                        <input type="text" id="name2" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone2">Телефон *</label>
+                        <input type="tel" id="phone2" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="equipment2">Какое оборудование нужно *</label>
+                        <textarea id="equipment2" name="equipment" rows="3" placeholder="Опишите кратко, что нужно для вашего бизнеса" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="city2">Ваш город *</label>
+                        <select id="city2" name="city" required>
+                            <option value="">Выберите город</option>
+                            <option value="Челябинск">Челябинск</option>
+                            <option value="Магнитогорск">Магнитогорск</option>
+                            <option value="Миасс">Миасс</option>
+                            <option value="Копейск">Копейск</option>
+                            <option value="Златоуст">Златоуст</option>
+                            <option value="Троицк">Троицк</option>
+                            <option value="Другой город области">Другой город области</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="submit-btn">ПОЛУЧИТЬ РАСЧЁТ ЗА 1 ЧАС</button>
+                </form>
+                <p style="text-align: center; margin-top: 20px; color: #666;">
+                    Или звоните прямо сейчас: <strong style="color: #e74c3c;">8-800-4444-100</strong>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p><strong>ТРАНСЛИЗИНГ</strong> — программа АБВ для малого бизнеса Челябинской области</p>
+            <p>Телефон: <strong>8-800-4444-100</strong></p>
+            <p>Работаем с 9:00 до 18:00 по будням</p>
+            <p style="margin-top: 20px; font-size: 14px; opacity: 0.8;">
+                © 2024 Транслизинг. Все права защищены.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling для ссылок
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Простая обработка форм
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Спасибо за заявку! Мы перезвоним вам в течение часа.');
+            });
+        });
+    </script>
+</body>
+</html>
